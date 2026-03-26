@@ -1,0 +1,32 @@
+name: Send Daily Reports via Email
+
+on:
+  push:
+    # 仅当根目录下的日期文件夹（如 2026-03-26/）中新增了文件时才触发
+    paths:
+      - '20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]/*.md'
+  workflow_dispatch: # 允许手动触发测试
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install toml
+
+      - name: Run send report script
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python scripts/send_report.py
