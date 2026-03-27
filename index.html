@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>日报运行监控大屏</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; background: #f6f8fa; }
+        .dashboard { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 3px rgba(27,31,35,0.12); }
+        h1 { margin-top: 0; color: #24292e; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; }
+        .stat-card { flex: 1; padding: 15px; background: #f1f8ff; border: 1px solid #c8e1ff; border-radius: 6px; text-align: center; }
+        .stat-card h3 { margin: 0 0 5px 0; font-size: 14px; color: #586069; }
+        .stat-card p { margin: 0; font-size: 24px; font-weight: 600; color: #0366d6; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 15px 10px; border-bottom: 1px solid #e1e4e8; display: flex; justify-content: space-between; align-items: center; }
+        li:last-child { border-bottom: none; }
+        .status-success { color: #28a745; font-weight: bold; }
+        .status-failure { color: #cb2431; font-weight: bold; }
+        a { color: #0366d6; text-decoration: none; font-size: 14px; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>📊 日报运行监控大屏</h1>
+        <div class="stats">
+            <div class="stat-card">
+                <h3>最近运行状态</h3>
+                <p id="status">加载中...</p>
+            </div>
+            <div class="stat-card">
+                <h3>总执行次数</h3>
+                <p id="total">0</p>
+            </div>
+        </div>
+        <h2>历史记录 (自动增量更新)</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <script>
+        const DATA_URL = './data.json';
+        const CACHE_KEY = 'daily_report_stats';
+        
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) renderData(JSON.parse(cachedData));
+
+        fetch(DATA_URL, { cache: "no-cache" })
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                renderData(data);
+            })
+            .catch(err => console.error("获取监控数据失败", err));
+
+        function renderData(data) {
+            document.getElementById('total').innerText = data.length;
+            if (data.length > 0) {
+                const latest = data[0];
+                const statusEl = document.getElementById('status');
+                statusEl.innerText = latest.conclusion === 'success' ? '✅ 成功' : '❌ 失败';
+                statusEl.className = latest.conclusion === 'success' ? 'status-success' : 'status-failure';
+            }
+            
+            const listEl = document.getElementById('historyList');
+            listEl.innerHTML = data.map(run => {
+                const isSuccess = run.conclusion === 'success';
+                return `<li>
+                    <span>
+                        <strong>${new Date(run.createdAt).toLocaleString()}</strong> - 
+                        <span class="${isSuccess ? 'status-success' : 'status-failure'}">${isSuccess ? '成功' : '失败'}</span>
+                    </span>
+                    <a href="${run.url}" target="_blank">查看运行日志 ↗</a>
+                </li>`;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
