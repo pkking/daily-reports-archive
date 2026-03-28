@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-28T00:00:41Z",
+    "databaseId": 23672596632,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23672596632"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-27T00:00:30Z",
+    "databaseId": 23624080273,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23624080273"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-26T16:20:06Z",
+    "databaseId": 23605347718,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23605347718"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-26T16:18:11Z",
+    "databaseId": 23605259921,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23605259921"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-26T16:01:21Z",
+    "databaseId": 23604455115,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23604455115"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-03-26T15:41:37Z",
+    "databaseId": 23603473050,
+    "status": "completed",
+    "url": "https://github.com/pkking/daily-reports-archive/actions/runs/23603473050"
+  }
+]
